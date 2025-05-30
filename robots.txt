@@ -1,5 +1,5 @@
 User-Agent: *
 Allow: /
 
-Host: https://green-apple.github.io
-Sitemap: https://green-apple.github.io/sitemap.xml
+Host: https://grapple02.github.io
+Sitemap: https://grapple02.github.io/sitemap.xml
