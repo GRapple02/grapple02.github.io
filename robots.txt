@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+
+Host: https://green-apple.github.io
+Sitemap: https://green-apple.github.io/sitemap.xml
