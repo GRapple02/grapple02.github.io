@@ -1,85 +1,43 @@
 import Link from '@/components/Link'
-import Tag from '@/components/Tag'
 import siteMetadata from 'data/siteMetadata'
-import { formatDate } from 'pliny/utils/formatDate'
 import type { CoreContent } from 'pliny/utils/contentlayer'
 import { Blog } from 'contentlayer/generated'
+import Card from '@/components/Card'
 
-
-const MAX_DISPLAY = 5
+const MAX_DISPLAY = 10
 
 export default function Home({ posts }: { posts: CoreContent<Blog>[] }) {
   return (
     <>
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-          <h1 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 dark:text-gray-100">
-            Latest
-          </h1>
-          <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            {siteMetadata.description}
-          </p>
-        </div>
-        <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-          {!posts.length && 'No posts found.'}
-          {posts.slice(0, MAX_DISPLAY).map((post) => {
-            const { slug, date, title, summary, tags } = post
-            return (
-              <li key={slug} className="py-12">
-                <article>
-                  <div className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
-                    <dl>
-                      <dt className="sr-only">Published on</dt>
-                      <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
-                        <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
-                      </dd>
-                    </dl>
-                    <div className="space-y-5 xl:col-span-3">
-                      <div className="space-y-6">
-                        <div>
-                          <h2 className="text-2xl leading-8 font-bold tracking-tight">
-                            <Link
-                              href={`/posts/${slug}`}
-                              className="text-gray-900 dark:text-gray-100"
-                            >
-                              {title}
-                            </Link>
-                          </h2>
-                          <div className="flex flex-wrap">
-                            {tags.map((tag) => (
-                              <Tag key={tag} text={tag} />
-                            ))}
-                          </div>
-                        </div>
-                        <div className="prose max-w-none text-gray-500 dark:text-gray-400">
-                          {summary}
-                        </div>
-                      </div>
-                      <div className="text-base leading-6 font-medium">
-                        <Link
-                          href={`/posts/${slug}`}
-                          className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                          aria-label={`Read more: "${title}"`}
-                        >
-                          Read more &rarr;
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-              </li>
-            )
-          })}
-        </ul>
+      <div className="space-y-2 pt-6 pb-8 md:space-y-5">
+        <p className="text-l leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10 md:text-3xl md:leading-14 dark:text-gray-100">
+          최신글 보기
+        </p>
+        <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
+          {siteMetadata.description}
+        </p>
+      </div>
+      <div className="grid gap-8 grid-cols-2">
+        {!posts.length && <div className="col-span-full text-center">최신 글이 없습니다...</div>}
+        {posts.slice(0, MAX_DISPLAY).map((post) => (
+          <Card
+            key={post.slug}
+            title={post.title}
+            imgSrc={post.images && post.images[0]}
+            href={`/posts/${post.slug}`}
+            date={post.date}
+            tag={post.tags?.[0]}
+          />
+        ))}
       </div>
       {posts.length > MAX_DISPLAY && (
-        <div className="flex justify-end text-base leading-6 font-medium">
+        <div className="flex justify-end text-base leading-6 font-medium mt-8">
           <Link
-            href="/blog"
+            href="/posts"
             className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
             aria-label="All posts"
           >
-            All Posts &rarr;
+            전체 글 보기 &rarr;
           </Link>
         </div>
       )}

@@ -1,19 +1,19 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'GRappe\'s Blog',
+  title: 'GRapple\'s Blog',
   author: '김민호',
-  headerTitle: 'GRapple\'s Thech Blog',
-  description: '웹 개발과 관련된 다양한 기술 블로그입니다.',
+  headerTitle: 'GRapple\'s Tech Blog',
+  description: '웹 개발과 여행 블로그',
   language: 'ko-kr',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://green-apple.github.io',
-  siteRepo: 'https://github.com/green-apple/green-apple.github.io',
+  siteUrl: 'https://grapple02.github.io',
+  siteRepo: 'https://github.com/GRapple02/grapple02.github.io',
   siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,
   mastodon: '',
   email: 'grpel2108@gmail.com',
   github: 'https://github.com/GRapple02',
-  instagram: 'https://www.instagram.com/grapple2108',
+  instagram: 'https://www.instagram.com/gr_apple1',
   locale: 'ko-KR',
   // set to true if you want a navbar fixed to the top
   stickyNav: false,
@@ -76,14 +76,6 @@ const siteMetadata = {
     kbarConfig: {
       searchDocumentsPath: `${process.env.BASE_PATH || ''}/search.json`, // path to load documents to search
     },
-    // provider: 'algolia',
-    // algoliaConfig: {
-    //   // The application ID provided by Algolia
-    //   appId: 'R2IYF7ETH7',
-    //   // Public API key: it is safe to commit it
-    //   apiKey: '599cec31baffa4868cae4e79f180729b',
-    //   indexName: 'docsearch',
-    // },
   },
 }
 
