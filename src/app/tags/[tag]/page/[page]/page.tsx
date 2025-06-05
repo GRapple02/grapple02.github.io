@@ -4,8 +4,7 @@ import ListLayout from '@/layouts/ListLayoutWithTags'
 import { allBlogs } from 'contentlayer/generated'
 import tagData from 'app/tag-data.json'
 import { notFound } from 'next/navigation'
-
-const POSTS_PER_PAGE = 5
+import { POSTS_PER_PAGE } from '@/constants/config'
 
 export async function generateStaticParams() {
   const tagCounts = tagData as Record<string, number>
