@@ -5,7 +5,7 @@ const siteMetadata = {
   headerTitle: 'GRapple\'s Tech Blog',
   description: '웹 개발과 여행 블로그',
   language: 'ko-kr',
-  theme: 'system', // system, dark or light
+  theme: 'dark',
   siteUrl: 'https://grapple02.github.io',
   siteRepo: 'https://github.com/GRapple02/grapple02.github.io',
   siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,

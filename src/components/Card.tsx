@@ -15,7 +15,7 @@ type CardProps = {
 const Card = ({ title, imgSrc, href, date, tag }: CardProps) => (
   <Link
     href={href}
-    className="rounded-3xl overflow-hidden shadow-lg bg-gray-900/95 flex flex-col w-full h-96"
+    className="rounded-2xl overflow-hidden shadow-lg bg-gray-900/95 flex flex-col w-full h-80"
     aria-label={`Link to ${title}`}
   >
     {/* 상단 이미지 영역 */}
@@ -24,8 +24,6 @@ const Card = ({ title, imgSrc, href, date, tag }: CardProps) => (
         <Image
           src={imgSrc}
           alt={title}
-          // width={120}
-          // height={120}
           fill={true}
           className="mb-3"
         />

@@ -26,7 +26,7 @@ import rehypePresetMinify from 'rehype-preset-minify'
 import siteMetadata from './data/siteMetadata.js'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer.js'
 import prettier from 'prettier'
-import type { Blog as BlogType } from 'contentlayer/generated';
+import type { Blog as BlogType, Etc as EtcType } from 'contentlayer/generated';
 
 const root = process.cwd()
 const isProduction = process.env.NODE_ENV === 'production'
@@ -64,7 +64,7 @@ const computedFields: ComputedFields = {
 /**
  * Count the occurrences of all tags across blog posts and write to json file
  */
-async function createTagCount(allBlogs: BlogType[]) {
+async function createTagCount(allBlogs: BlogType[] | EtcType[], type: 'posts' | 'etc') {
   const tagCount: Record<string, number> = {}
   allBlogs.forEach((file) => {
     if (file.tags && (!isProduction || file.draft !== true)) {
@@ -80,7 +80,7 @@ async function createTagCount(allBlogs: BlogType[]) {
   })
   const formatted = await prettier.format(JSON.stringify(tagCount, null, 2), { parser: 'json' })
   // 디렉토리 생성 (없으면)
-  const tagDataPath = path.join(process.cwd(), 'src/app/tag-data.json')
+  const tagDataPath = path.join(process.cwd(), `src/tags/${type}/tag-data.json`)
   const tagDataDir = path.dirname(tagDataPath)
   if (!fs.existsSync(tagDataDir)) {
     fs.mkdirSync(tagDataDir, { recursive: true })
@@ -136,28 +136,79 @@ export const Blog = defineDocumentType(() => ({
   },
 }))
 
-export const Authors = defineDocumentType(() => ({
-  name: 'Authors',
-  filePathPattern: 'authors/**/*.mdx',
+export const Travel = defineDocumentType(() => ({
+  name: 'Travel',
+  filePathPattern: 'travels/**/*.mdx',
   contentType: 'mdx',
   fields: {
-    name: { type: 'string', required: true },
-    avatar: { type: 'string' },
-    occupation: { type: 'string' },
-    company: { type: 'string' },
-    email: { type: 'string' },
-    twitter: { type: 'string' },
-    bluesky: { type: 'string' },
-    linkedin: { type: 'string' },
-    github: { type: 'string' },
+    title: { type: 'string', required: true },
+    date: { type: 'date', required: true },
+    tags: { type: 'list', of: { type: 'string' }, default: [] },
+    lastmod: { type: 'date' },
+    draft: { type: 'boolean' },
+    summary: { type: 'string' },
+    images: { type: 'json' },
+    authors: { type: 'list', of: { type: 'string' } },
     layout: { type: 'string' },
+    bibliography: { type: 'string' },
+    canonicalUrl: { type: 'string' },
   },
-  computedFields,
+  computedFields: {
+    ...computedFields,
+    structuredData: {
+      type: 'json',
+      resolve: (doc) => ({
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: doc.title,
+        datePublished: doc.date,
+        dateModified: doc.lastmod || doc.date,
+        description: doc.summary,
+        image: doc.images ? doc.images[0] : siteMetadata.socialBanner,
+        url: `${siteMetadata.siteUrl}/${doc._raw.flattenedPath}`,
+      }),
+    },
+  },
+}))
+
+export const Etc = defineDocumentType(() => ({
+  name: 'Etc',
+  filePathPattern: 'etc/**/*.mdx',
+  contentType: 'mdx',
+  fields: {
+    title: { type: 'string', required: true },
+    date: { type: 'date', required: true },
+    tags: { type: 'list', of: { type: 'string' }, default: [] },
+    lastmod: { type: 'date' },
+    draft: { type: 'boolean' },
+    summary: { type: 'string' },
+    images: { type: 'json' },
+    authors: { type: 'list', of: { type: 'string' } },
+    layout: { type: 'string' },
+    bibliography: { type: 'string' },
+    canonicalUrl: { type: 'string' },
+  },
+  computedFields: {
+    ...computedFields,
+    structuredData: {
+      type: 'json',
+      resolve: (doc) => ({
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: doc.title,
+        datePublished: doc.date,
+        dateModified: doc.lastmod || doc.date,
+        description: doc.summary,
+        image: doc.images ? doc.images[0] : siteMetadata.socialBanner,
+        url: `${siteMetadata.siteUrl}/${doc._raw.flattenedPath}`,
+      }),
+    },
+  },
 }))
 
 export default makeSource({
   contentDirPath: 'data',
-  documentTypes: [Blog, Authors],
+  documentTypes: [Blog, Travel, Etc],
   mdx: {
     cwd: process.cwd(),
     remarkPlugins: [
@@ -188,8 +239,9 @@ export default makeSource({
     ],
   },
   onSuccess: async (importData) => {
-    const { allBlogs } = await importData()
-    createTagCount(allBlogs)
+    const { allBlogs, allEtcs } = await importData()
+    createTagCount(allBlogs, 'posts')
+    createTagCount(allEtcs, 'etc')
     createSearchIndex(allBlogs)
   },
 })

@@ -1,15 +1,15 @@
-import { getPostData, getSortedPostsData } from '@/lib/posts';
+import { getPostData, getPostsData } from '@/lib/posts';
 import { Metadata } from 'next';
 
 type PageProps = Promise<{ slug: string; }>;
 
 export async function generateStaticParams() {
-  const posts = getSortedPostsData();
+  const posts = getPostsData();
   return posts.map((post) => ({ slug: post.id }));
 }
 
 export async function generateMetadata({ params }: { params: PageProps}): Promise<Metadata> {
-  const post = await getPostData((await params).slug);
+  const post = await getPostData('posts',(await params).slug);
   return {
     title: post.title,
     description: post.description,
@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: { params: PageProps}): Promis
 }
 
 export default async function Post({ params }: { params: PageProps}) {
-  const post = await getPostData((await params).slug);
+  const post = await getPostData('posts', (await params).slug);
 
   return (
     <article className="prose prose-lg max-w-3xl mx-auto p-4">

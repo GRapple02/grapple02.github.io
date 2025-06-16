@@ -26,6 +26,7 @@
       "contentlayer/generated": ["./.contentlayer/generated"],
       "pliny/*": ["node_modules/pliny/*"],
       "app/*": ["./src/app/*"],
+      "tags/*": ["./src/tags/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

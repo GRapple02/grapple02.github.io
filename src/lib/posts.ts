@@ -4,13 +4,14 @@ import matter from 'gray-matter';
 import { remark } from 'remark';
 import html from 'remark-html';
 
-const postsDirectory = path.join(process.cwd(), 'data/posts');
+type PostType = 'posts' | 'travels' | 'etc';
 
-export function getSortedPostsData() {
+export function getPostsData(type: PostType = 'posts') {
+  const postsDirectory = path.join(process.cwd(), `data/${type}`);
   const fileNames = fs.readdirSync(postsDirectory);
 
   const allPostsData = fileNames.map((fileName) => {
-    const id = fileName.replace(/\.mdx$/, '');
+    const id = encodeURI(fileName.replace(/\.mdx$/, ''));
     const fullPath = path.join(postsDirectory, fileName);
     const fileContents = fs.readFileSync(fullPath, 'utf8');
 
@@ -22,11 +23,17 @@ export function getSortedPostsData() {
     };
   });
 
-  return allPostsData.sort((a, b) => (a.date < b.date ? 1 : -1));
+  return allPostsData;
 }
 
-export async function getPostData(id: string) {
-  const fullPath = path.join(postsDirectory, `${id}.mdx`);
+export function getSortedPostsData(type: PostType = 'posts') {
+  return getPostsData(type).sort((a, b) => (a.date < b.date ? 1 : -1));
+}
+
+export async function getPostData(type: PostType = 'posts', id: string) {
+  const fileName = decodeURI(id);
+  const postsDirectory = path.join(process.cwd(), `data/${type}`);
+  const fullPath = path.join(postsDirectory, `${fileName}.mdx`);
   const fileContents = fs.readFileSync(fullPath, 'utf8');
 
   const matterResult = matter(fileContents);
@@ -37,7 +44,7 @@ export async function getPostData(id: string) {
   const contentHtml = processedContent.toString();
 
   return {
-    id,
+    fileName,
     contentHtml,
     ...(matterResult.data as { date: string; title: string; description: string }),
   };
