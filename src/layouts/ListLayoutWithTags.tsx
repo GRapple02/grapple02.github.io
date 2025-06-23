@@ -86,7 +86,7 @@ export default function ListLayoutWithTags({
     <>
       <div>
         <div className="flex sm:space-x-24">
-          <div className="hidden h-full max-h-screen max-w-[280px] min-w-[280px] flex-wrap overflow-auto rounded-sm bg-gray-50 pt-5 shadow-md sm:flex dark:bg-gray-900/70 dark:shadow-gray-800/40">
+          <div className="hidden h-full max-h-screen max-w-[280px] min-w-[280px] flex-wrap overflow-auto rounded-sm bg-gray-900/70 pt-5 shadow-md sm:flex shadow-gray-800/40">
             <div className="px-6 py-4">
               {!tag ? (
                 <h3 className="text-emerald-400 text-xl font-bold uppercase">{title}{tag}</h3>
@@ -109,7 +109,7 @@ export default function ListLayoutWithTags({
                       ) : (
                         <Link
                           href={`/${type}/page/${slug(t)}/1`}
-                          className="hover:text-emerald-400 px-3 py-2 text-base font-bold text-gray-500 dark:text-gray-300"
+                          className="hover:text-emerald-400 px-3 py-2 text-base font-bold text-gray-300"
                           aria-label={`View posts tagged ${t}`}
                         >
                           {`${t} (${tagCounts[t]})`}
@@ -130,7 +130,7 @@ export default function ListLayoutWithTags({
                     <article className="flex flex-col space-y-2 xl:space-y-0">
                       <dl>
                         <dt className="sr-only">Published on</dt>
-                        <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
+                        <dd className="text-base leading-6 font-medium text-gray-400">
                           <time dateTime={date} suppressHydrationWarning>
                             {formatDate(date, siteMetadata.locale)}
                           </time>
@@ -139,15 +139,15 @@ export default function ListLayoutWithTags({
                       <div className="space-y-3">
                         <div>
                           <h2 className="text-2xl leading-8 font-bold tracking-tight">
-                            <Link href={`/${path}`} className="text-gray-900 dark:text-gray-100">
+                            <Link href={`/${path}`} className="text-gray-100">
                               {title}
                             </Link>
                           </h2>
                           <div className="flex flex-wrap">
-                            {tags?.map((tag) => <Tag key={tag} text={tag} />)}
+                            {tags?.map((tag) => <Tag key={tag} text={tag} type={type} />)}
                           </div>
                         </div>
-                        <div className="prose max-w-none text-gray-500 dark:text-gray-400">
+                        <div className="prose max-w-none text-gray-400">
                           {summary}
                         </div>
                       </div>

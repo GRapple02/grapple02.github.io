@@ -46,6 +46,6 @@ export async function getPostData(type: PostType = 'posts', id: string) {
   return {
     fileName,
     contentHtml,
-    ...(matterResult.data as { date: string; title: string; description: string }),
+    ...(matterResult.data as { date: string; title: string; tags: string[]; description: string }),
   };
 }

@@ -1,8 +1,6 @@
 @import 'tailwindcss';
 @plugin "@tailwindcss/forms";
-@plugin '@tailwindcss/typography';
 @source '../node_modules/pliny';
-@custom-variant dark (&:where(.dark, .dark *));
 
 /* Core theme configuration */
 @theme {
@@ -100,21 +98,6 @@
       color: var(--color-indigo-500);
     }
   }
-
-  .prose-invert {
-    & a {
-      color: var(--color-primary-500);
-      &:hover {
-        color: var(--color-primary-400);
-      }
-      & code {
-        color: var(--color-primary-400);
-      }
-    }
-    & :where(h1, h2, h3, h4, h5, h6) {
-      color: var(--color-gray-100);
-    }
-  }
 }
 
 .task-list-item::before {
@@ -126,7 +109,7 @@
 }
 
 .footnotes {
-  @apply mt-12 border-t border-gray-200 pt-8 dark:border-gray-700;
+  @apply mt-12 border-t border-gray-200 pt-8;
 }
 
 .data-footnote-backref {

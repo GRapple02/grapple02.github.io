@@ -117,6 +117,8 @@ export const Blog = defineDocumentType(() => ({
     layout: { type: 'string' },
     bibliography: { type: 'string' },
     canonicalUrl: { type: 'string' },
+    font: { type: 'string' },
+    fontFace: { type: 'string' },
   },
   computedFields: {
     ...computedFields,
@@ -152,6 +154,8 @@ export const Travel = defineDocumentType(() => ({
     layout: { type: 'string' },
     bibliography: { type: 'string' },
     canonicalUrl: { type: 'string' },
+    font: { type: 'string' },
+    fontFace: { type: 'string' },
   },
   computedFields: {
     ...computedFields,
@@ -187,6 +191,8 @@ export const Etc = defineDocumentType(() => ({
     layout: { type: 'string' },
     bibliography: { type: 'string' },
     canonicalUrl: { type: 'string' },
+    font: { type: 'string' },
+    fontFace: { type: 'string' },
   },
   computedFields: {
     ...computedFields,

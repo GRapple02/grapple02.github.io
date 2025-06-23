@@ -1,5 +1,8 @@
 import { getPostData, getPostsData } from '@/lib/posts';
 import { Metadata } from 'next';
+import { allTravels } from 'contentlayer/generated';
+import { notFound } from 'next/navigation';
+import PostLayout from '@/layouts/PostLayout';
 
 type PageProps = Promise<{ slug: string; }>;
 
@@ -17,13 +20,18 @@ export async function generateMetadata({ params }: { params: PageProps }): Promi
 }
 
 export default async function Post({ params }: { params: PageProps }) {
-  const post = await getPostData('travels', (await params).slug);
+  const slug = decodeURI((await params).slug)
+  const postIndex = allTravels.findIndex((p) => p.slug === slug);
+
+  const post = allTravels[postIndex] || null;
+  const next = allTravels[postIndex + 1] || null;
+  const prev = allTravels[postIndex - 1] || null;
+
+  if (!post) {
+    return notFound();
+  }
 
   return (
-    <article className="prose prose-lg max-w-3xl mx-auto p-4">
-      <h1>{post.title}</h1>
-      <p className="text-gray-500 text-sm">{post.date}</p>
-      <div dangerouslySetInnerHTML={{ __html: post.contentHtml }} />
-    </article>
+    <PostLayout content={post} next={next} prev={prev} type='travels' />
   );
 }

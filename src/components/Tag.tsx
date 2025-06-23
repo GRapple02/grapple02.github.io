@@ -3,13 +3,14 @@ import { slug } from 'github-slugger'
 interface Props {
   text: string
   activate?: boolean
+  type: 'posts' | 'travels' | 'etc'
 }
 
-const Tag = ({ text, activate }: Props) => {
+const Tag = ({ text, activate, type }: Props) => {
   return (
     !activate ? (
       <Link
-        href={`/tags/${slug(text)}`}
+        href={`/${type}/page/${slug(text)}/1`}
         className="text-emerald-500 hover:text-emerald-400 mr-3 text-sm font-medium"
       >
         {text.split(' ').join('-')}
