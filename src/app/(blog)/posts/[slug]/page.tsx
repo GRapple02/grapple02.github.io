@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: PageProps }): Promi
 }
 
 export default async function Post({ params }: { params: PageProps }) {
-  const slug = decodeURI((await params).slug)
+  const slug = decodeURIComponent((await params).slug)
   const postIndex = allBlogs.findIndex((p) => p.slug === slug);
 
   const post = allBlogs[postIndex] || null;

@@ -6,6 +6,7 @@ import { POSTS_PER_PAGE } from '@/constants/config'
 import { slug } from 'github-slugger'
 
 import tagData from 'tags/posts/tag-data.json'
+import { encodeURIComponentWhenLocal } from '@/lib/utils'
 
 export const generateStaticParams = async () => {
   const params: { page: string[] }[] = []
@@ -22,7 +23,7 @@ export const generateStaticParams = async () => {
     )
     const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE)
     for (let i = 1; i <= totalPages; i++) {
-      params.push({ page: [encodeURI(tag), i.toString()] })
+      params.push({ page: [encodeURIComponentWhenLocal(tag), i.toString()] })
     }
   })
 
@@ -37,7 +38,7 @@ export const generateStaticParams = async () => {
 
 export default async function Page(props: { params: Promise<{ page: string[] }> }) {
   const params = await props.params
-  const tag = decodeURI(params.page[0])
+  const tag = decodeURIComponent(params.page[0])
   const filteredPosts = allCoreContent(
     sortPosts(allBlogs.filter((post) => post.tags && post.tags.map((t) => slug(t)).includes(tag)))
   )

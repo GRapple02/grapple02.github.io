@@ -19,7 +19,7 @@ interface LayoutProps {
 }
 
 export default function PostLayout({ content, next, prev, type }: LayoutProps) {
-  const { path, slug, date, title } = content
+  const { slug, date, title } = content
   const MDXContent = useMDXComponent(content.body.code)
 
   // #, ## 제목 추출 및 계층 구조 TOC 생성
@@ -53,12 +53,12 @@ export default function PostLayout({ content, next, prev, type }: LayoutProps) {
   // MDX h1, h2에 id 자동 부여
   const componentsWithHeading = useMemo(() => ({
     ...components,
-    h1: (props: any) => {
+    h1: (props: React.ComponentProps<'h1'>) => {
       const text = typeof props.children === 'string' ? props.children : ''
       const id = text.toLowerCase().replace(/[^a-z0-9가-힣\s]/g, '').replace(/\s+/g, '-')
       return <h1 id={id} {...props} />
     },
-    h2: (props: any) => {
+    h2: (props: React.ComponentProps<'h2'>) => {
       const text = typeof props.children === 'string' ? props.children : ''
       const id = text.toLowerCase().replace(/[^a-z0-9가-힣\s]/g, '').replace(/\s+/g, '-')
       return <h2 id={id} {...props} />

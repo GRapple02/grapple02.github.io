@@ -3,6 +3,7 @@ import path from 'path';
 import matter from 'gray-matter';
 import { remark } from 'remark';
 import html from 'remark-html';
+import { encodeURIComponentWhenLocal } from './utils';
 
 type PostType = 'posts' | 'travels' | 'etc';
 
@@ -11,7 +12,7 @@ export function getPostsData(type: PostType = 'posts') {
   const fileNames = fs.readdirSync(postsDirectory);
 
   const allPostsData = fileNames.map((fileName) => {
-    const id = encodeURI(fileName.replace(/\.mdx$/, ''));
+    const id = encodeURIComponentWhenLocal(fileName.replace(/\.mdx$/, ''));
     const fullPath = path.join(postsDirectory, fileName);
     const fileContents = fs.readFileSync(fullPath, 'utf8');
 
@@ -31,7 +32,7 @@ export function getSortedPostsData(type: PostType = 'posts') {
 }
 
 export async function getPostData(type: PostType = 'posts', id: string) {
-  const fileName = decodeURI(id);
+  const fileName = decodeURIComponent(id);
   const postsDirectory = path.join(process.cwd(), `data/${type}`);
   const fullPath = path.join(postsDirectory, `${fileName}.mdx`);
   const fileContents = fs.readFileSync(fullPath, 'utf8');
